@@ -11,10 +11,6 @@ html, body, .main {
   overflow: hidden;
 }
 
-img {
-  margin: 2em;
-}
-
 .main {
   display: flex;
   flex-direction: column;
@@ -34,4 +30,33 @@ img {
 .actionBar {
   display: flex;
   flex-direction: row; 
+}
+
+.flag {
+  width: 320px;
+  height: 200px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.guessedFlags {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  height: 100vh;
+  width: 150px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: scroll;
+}
+
+.guessedFlags > div {
+  margin: 5px;
 }

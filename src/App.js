@@ -9,7 +9,8 @@ const useFocus = () => {
 }
 
 function App() {
-  const [country, setCountry] = useState({"id": "0","name": "","alpha2": "","alpha3": ""});
+  const [currentCountry, setCurrentCountry] = useState({"id": "-1","name": "","alpha2": "","alpha3": ""});
+  const [guessedCountries, setGuessedCountries] = useState([]);
 
   const [guess, setGuess] = useState("");
   const [correct, setCorrect] = useState(false);
@@ -19,17 +20,33 @@ function App() {
   }
 
   useEffect(() => {
-    setCorrect(country.name.toLowerCase() === guess.toLowerCase());
-  }, [country.name, guess]);
+    setCorrect(currentCountry.name.toLowerCase() === guess.toLowerCase());
+  }, [currentCountry.name, guess]);
 
-  useEffect(() => {if (correct) nextFlag()}, [correct]);
+  useEffect(() => {
+    if (correct && currentCountry.id >= 0) {
+      // User guessed the flag correctly
+      setGuessedCountries(guessedCountries => [currentCountry, ...guessedCountries]);
+      nextFlag();
+    }
+  }, [correct]);
 
   const nextFlag = () => {
-    setCountry(countries[Math.floor(Math.random() * countries.length)]);
+    // Set the next flag
+    if(countries.length === guessedCountries.length) return
+
+    let newPickCountries = countries.filter(e => !guessedCountries.some(f => f.id === e.id));
+
+    setCurrentCountry(newPickCountries[Math.floor(Math.random() * newPickCountries.length)]);
     setGuess("");
     setInputFocus();
   }
-  useEffect(nextFlag, []);
+  
+  const resetGame = () => {
+    setGuessedCountries([]);
+    nextFlag();
+  }
+  useEffect(resetGame, []);
 
   const [lengthHint, setLengthHint] = useState(false);
   const [prefixHint, setPrefixHint] = useState(false);
@@ -69,23 +86,44 @@ function App() {
           />
           Prefix length
         </label><br/>
+
+        <h2>Stats</h2>
+        <p>Number of guessed flags: {guessedCountries.length}</p>
       </div>
       <div className="main ">
-        { country && // Needed to wait for the country to be picked
-          <img
-            src={`https://flagcdn.com/w320/${country.alpha2}.png`}
-            srcSet={`https://flagcdn.com/w640/${country.alpha2}.png 2x`}
-            width="240"
-            alt="Country Flag ot guess"></img>
-        }
+        <div className='flag'>
+          { currentCountry && // Needed to wait for the currentCountry to be picked
+            <img
+              src={`https://flagcdn.com/w320/${currentCountry.alpha2}.png`}
+              srcSet={`https://flagcdn.com/w640/${currentCountry.alpha2}.png 2x`}
+              width="240"
+              alt="Country Flag ot guess"
+              style={{border: '3px solid black', padding: '1px'}} />
+          }
+        </div>
 
-        <input placeholder={prefixHint ? country.name.substring(0,Math.min(prefixLength, country.name.length-1)).toLowerCase() : ""} className="mainInput" ref={inputRef} value={guess} onChange={handleInputChange} style={{backgroundColor: correct ? "#52CC7A" : "white" }}/>
+        <input placeholder={prefixHint ? currentCountry.name.substring(0,Math.min(prefixLength, currentCountry.name.length-1)).toLowerCase() : ""} className="mainInput" ref={inputRef} value={guess} onChange={handleInputChange} style={{backgroundColor: correct ? "#52CC7A" : "white" }}/>
 
         <div className='actionBar'>
           <span onKeyDown={(e) => {if(e.keyCode === 13) nextFlag()}} className="material-symbols-outlined" tabIndex={0}>chevron_right</span>
           <span className="material-symbols-outlined" tabIndex={0}>question_mark</span>
-          <span className="material-symbols-outlined" tabIndex={0}>restart_alt</span>
+          <span onKeyDown={(e) => {if(e.keyCode === 13) resetGame()}} className="material-symbols-outlined" tabIndex={0}>restart_alt</span>
         </div>
+      </div>
+      <div className='guessedFlags'>
+      {
+        guessedCountries.map((c, i) =>
+          <div key={i}>
+            <img
+              src={`https://flagcdn.com/w320/${c.alpha2}.png`}
+              srcSet={`https://flagcdn.com/w640/${c.alpha2}.png 2x`}
+              width="240"
+              alt="Country Flag ot guess"
+              style={{width: '100px'}} />
+            <p>{c.name}</p>
+          </div>
+        )
+      }
       </div>
     </>
   );
