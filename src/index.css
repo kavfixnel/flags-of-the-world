@@ -20,11 +20,17 @@ html, body, .main {
 
 .settings {
   position: absolute;
+
+  margin: 5px;
 }
 
 .mainInput {
   border: none;
   outline: none;
+
+  border-bottom: 1px black solid;
+
+  margin: 5px;
 }
 
 .actionBar {
