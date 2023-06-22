@@ -733,7 +733,7 @@
     },
     {
         "id": "418",
-        "name": "Lao People's Democratic Republic",
+        "name": "Lao",
         "alpha2": "la",
         "alpha3": "lao"
     },
@@ -1021,7 +1021,7 @@
     },
     {
         "id": "275",
-        "name": "Palestine, State of",
+        "name": "Palestine",
         "alpha2": "ps",
         "alpha3": "pse"
     },
@@ -1111,13 +1111,13 @@
     },
     {
         "id": "652",
-        "name": "Saint Barthélemy",
+        "name": "Saint Barthelemy",
         "alpha2": "bl",
         "alpha3": "blm"
     },
     {
         "id": "654",
-        "name": "Saint Helena, Ascension and Tristan da Cunha",
+        "name": "Saint Helena",
         "alpha2": "sh",
         "alpha3": "shn"
     },
@@ -1141,13 +1141,13 @@
     },
     {
         "id": "666",
-        "name": "Saint Pierre and Miquelon",
+        "name": "Saint Pierre",
         "alpha2": "pm",
         "alpha3": "spm"
     },
     {
         "id": "670",
-        "name": "Saint Vincent and the Grenadines",
+        "name": "Saint Vincent",
         "alpha2": "vc",
         "alpha3": "vct"
     },
@@ -1243,7 +1243,7 @@
     },
     {
         "id": "239",
-        "name": "South Georgia and the South Sandwich Islands",
+        "name": "South Georgia",
         "alpha2": "gs",
         "alpha3": "sgs"
     },
@@ -1279,7 +1279,7 @@
     },
     {
         "id": "744",
-        "name": "Svalbard and Jan Mayen",
+        "name": "Svalbard",
         "alpha2": "sj",
         "alpha3": "sjm"
     },
@@ -1297,13 +1297,13 @@
     },
     {
         "id": "760",
-        "name": "Syrian Arab Republic",
+        "name": "Syrian",
         "alpha2": "sy",
         "alpha3": "syr"
     },
     {
         "id": "158",
-        "name": "Taiwan, Province of China",
+        "name": "Taiwan",
         "alpha2": "tw",
         "alpha3": "twn"
     },
@@ -1351,7 +1351,7 @@
     },
     {
         "id": "780",
-        "name": "Trinidad and Tobago",
+        "name": "Trinidad",
         "alpha2": "tt",
         "alpha3": "tto"
     },
@@ -1363,7 +1363,7 @@
     },
     {
         "id": "792",
-        "name": "Türkiye",
+        "name": "Turkey",
         "alpha2": "tr",
         "alpha3": "tur"
     },
@@ -1447,7 +1447,7 @@
     },
     {
         "id": "704",
-        "name": "Viet Nam",
+        "name": "Vietnam",
         "alpha2": "vn",
         "alpha3": "vnm"
     },
