@@ -15,12 +15,7 @@ const useFocus = () => {
 };
 
 function App() {
-  const [currentCountry, setCurrentCountry] = useState({
-    id: "-1",
-    name: "",
-    alpha2: "",
-    alpha3: "",
-  });
+  const [currentCountry, setCurrentCountry] = useState(null);
   const [guessedCountries, setGuessedCountries] = useState([]);
 
   const [guess, setGuess] = useState("");
@@ -31,11 +26,11 @@ function App() {
   };
 
   useEffect(() => {
-    setCorrect(currentCountry.name.toLowerCase() === guess.toLowerCase());
-  }, [currentCountry.name, guess]);
+    setCorrect(currentCountry != null && currentCountry.name.toLowerCase() === guess.toLowerCase());
+  }, [currentCountry, guess]);
 
   useEffect(() => {
-    if (correct && currentCountry.id >= 0) {
+    if (correct) {
       // User guessed the flag correctly
       setGuessedCountries((guessedCountries) => [
         currentCountry,
@@ -70,7 +65,7 @@ function App() {
   const [prefixHint, setPrefixHint] = useState(false);
   const [prefixLength, setPrefixLength] = useState(1);
 
-  return (
+  return currentCountry == null ? <></> : (
     <>
       <Settings
         totalLengthHint={totalLengthHint}
