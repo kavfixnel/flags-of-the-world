@@ -88,7 +88,7 @@ function App() {
         </label><br/>
 
         <h2>Stats</h2>
-        <p>Number of guessed flags: {guessedCountries.length}</p>
+        <p>Number of guessed flags: {guessedCountries.length}/{countries.length}</p>
       </div>
       <div className="main ">
         <div className='flag'>
