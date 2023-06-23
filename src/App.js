@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+
 import countries from './countries.json';
+import GuessedCountries from './components/GuessedCountries';
+import Settings from './components/Settings';
 
 const useFocus = () => {
   const htmlElRef = useRef(null)
@@ -48,48 +51,23 @@ function App() {
   }
   useEffect(resetGame, []);
 
-  const [lengthHint, setLengthHint] = useState(false);
+  const [totalLengthHint, settotalLengthHint] = useState(false);
   const [prefixHint, setPrefixHint] = useState(false);
   const [prefixLength, setPrefixLength] = useState(1);
 
-  const handleCheckChange = (e, f) => {
-    f(e.target.checked);
-  };
-
   return (
     <>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-      <div className="settings">
-        <h2>Hints</h2>
-        <label>
-          <input
-            type="checkbox"
-            checked={lengthHint}
-            onChange={(e) => handleCheckChange(e, setLengthHint)}
-          />
-          Total length
-        </label><br/>
-        <label>
-          <input
-            type="checkbox"
-            checked={prefixHint}
-            onChange={(e) => handleCheckChange(e, setPrefixHint)}
-          />
-          Prefix
-        </label><br/>
-        <label>
-          <input
-          value={prefixLength}
-            type="number"
-            onChange={(e) => setPrefixLength(e.target.value) }
-            min={0}
-          />
-          Prefix length
-        </label><br/>
+      <Settings
+        totalLengthHint={totalLengthHint}
+        settotalLengthHint={settotalLengthHint}
+        prefixHint={prefixHint}
+        setPrefixHint={setPrefixHint}
+        prefixLength={prefixLength}
+        setPrefixLength={setPrefixLength}
+        guessedCountries={guessedCountries}
+      />
+      <GuessedCountries countries={guessedCountries}/>
 
-        <h2>Stats</h2>
-        <p>Number of guessed flags: {guessedCountries.length}/{countries.length}</p>
-      </div>
       <div className="main ">
         <div className='flag'>
           { currentCountry && // Needed to wait for the currentCountry to be picked
@@ -109,21 +87,6 @@ function App() {
           <span className="material-symbols-outlined" tabIndex={0}>question_mark</span>
           <span onKeyDown={(e) => {if(e.keyCode === 13) resetGame()}} className="material-symbols-outlined" tabIndex={0}>restart_alt</span>
         </div>
-      </div>
-      <div className='guessedFlags'>
-      {
-        guessedCountries.map((c, i) =>
-          <div key={i}>
-            <img
-              src={`https://flagcdn.com/w320/${c.alpha2}.png`}
-              srcSet={`https://flagcdn.com/w640/${c.alpha2}.png 2x`}
-              width="240"
-              alt="Country Flag ot guess"
-              style={{width: '100px'}} />
-            <p>{c.name}</p>
-          </div>
-        )
-      }
       </div>
     </>
   );
