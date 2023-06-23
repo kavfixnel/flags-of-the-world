@@ -7,20 +7,18 @@ function Flag({
   guess,
   handleInputChange,
   nextFlag,
+  skipFlag,
   resetGame,
 }) {
   return (
     <>
       <div className="flag">
-        {currentCountry && ( // Needed to wait for the currentCountry to be picked
-          <img
-            src={`https://flagcdn.com/w320/${currentCountry.alpha2}.png`}
-            srcSet={`https://flagcdn.com/w640/${currentCountry.alpha2}.png 2x`}
-            width="240"
-            alt="Country Flag ot guess"
-            style={{ border: "3px solid black", padding: "1px" }}
-          />
-        )}
+        <img
+          src={`https://flagcdn.com/w320/${currentCountry.alpha2}.png`}
+          srcSet={`https://flagcdn.com/w640/${currentCountry.alpha2}.png 2x`}
+          width="240"
+          alt="Country Flag ot guess"
+        />
       </div>
 
       <input
@@ -56,15 +54,21 @@ function Flag({
         >
           chevron_right
         </span>
-        <span className="material-symbols-outlined" tabIndex={0}>
+        <span
+          className="material-symbols-outlined"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) skipFlag();
+          }}
+        >
           question_mark
         </span>
         <span
+          className="material-symbols-outlined"
+          tabIndex={0}
           onKeyDown={(e) => {
             if (e.keyCode === 13) resetGame();
           }}
-          className="material-symbols-outlined"
-          tabIndex={0}
         >
           restart_alt
         </span>

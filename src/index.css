@@ -50,6 +50,11 @@ body,
   justify-content: center;
 }
 
+.flag > img {
+  border: 3px solid black;
+  padding: 1px;
+}
+
 .guessedFlags {
   position: absolute;
   right: 0;
@@ -71,4 +76,12 @@ body,
 
 input {
   margin: 5px;
+}
+
+div.guessedFlags > * {
+  max-width: 100px;
+}
+
+div.guessedFlags > div.skipped {
+  opacity: 0.3;
 }

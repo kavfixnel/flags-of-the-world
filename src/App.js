@@ -26,12 +26,16 @@ function App() {
   };
 
   useEffect(() => {
-    setCorrect(currentCountry != null && currentCountry.name.toLowerCase() === guess.toLowerCase());
+    setCorrect(
+      currentCountry != null &&
+        currentCountry.name.toLowerCase() === guess.toLowerCase()
+    );
   }, [currentCountry, guess]);
 
   useEffect(() => {
     if (correct) {
       // User guessed the flag correctly
+      currentCountry.status = "guessed";
       setGuessedCountries((guessedCountries) => [
         currentCountry,
         ...guessedCountries,
@@ -55,6 +59,15 @@ function App() {
     setInputFocus();
   };
 
+  const skipFlag = () => {
+    currentCountry.status = "skipped";
+    setGuessedCountries((guessedCountries) => [
+      currentCountry,
+      ...guessedCountries,
+    ]);
+    nextFlag();
+  };
+
   const resetGame = () => {
     setGuessedCountries([]);
     nextFlag();
@@ -65,7 +78,9 @@ function App() {
   const [prefixHint, setPrefixHint] = useState(false);
   const [prefixLength, setPrefixLength] = useState(1);
 
-  return currentCountry == null ? <></> : (
+  return currentCountry == null ? (
+    <></>
+  ) : (
     <>
       <Settings
         totalLengthHint={totalLengthHint}
@@ -88,6 +103,7 @@ function App() {
           guess={guess}
           handleInputChange={handleInputChange}
           nextFlag={nextFlag}
+          skipFlag={skipFlag}
           resetGame={resetGame}
         />
       </div>

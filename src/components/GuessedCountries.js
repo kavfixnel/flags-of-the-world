@@ -2,7 +2,7 @@ function GuessedCountries({ countries }) {
   return (
     <div className="guessedFlags">
       {countries.map((c, i) => (
-        <div key={i}>
+        <div key={i} className={c.status}>
           <img
             src={`https://flagcdn.com/w320/${c.alpha2}.png`}
             srcSet={`https://flagcdn.com/w640/${c.alpha2}.png 2x`}

@@ -47,7 +47,12 @@ function GuessedCountries({
 
       <h2>Stats</h2>
       <p>
-        Number of guessed flags: {guessedCountries.length}/{countries.length}
+        Number of guessed flags:{" "}
+        {guessedCountries.reduce(
+          (prev, cur) => prev + (cur.status === "guessed" ? 1 : 0),
+          0
+        )}
+        /{countries.length}
       </p>
     </div>
   );
