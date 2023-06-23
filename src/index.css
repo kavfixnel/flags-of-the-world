@@ -68,3 +68,7 @@ body,
 .guessedFlags > div {
   margin: 5px;
 }
+
+input {
+  margin: 5px;
+}
