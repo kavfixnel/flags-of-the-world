@@ -97,14 +97,20 @@ function App() {
 
         <input
           placeholder={
-            prefixHint
+            (prefixHint
               ? currentCountry.name
                   .substring(
                     0,
                     Math.min(prefixLength, currentCountry.name.length - 1)
                   )
                   .toLowerCase()
-              : ""
+              : "") +
+            (totalLengthHint
+              ? "*".repeat(
+                  currentCountry.name.length -
+                    Math.min(prefixLength, currentCountry.name.length - 1)
+                )
+              : "")
           }
           className="mainInput"
           ref={inputRef}

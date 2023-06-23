@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
 
-  font: "Roboto";
+  font-family: monospace, monospace;
 }
 
 html,
@@ -42,7 +42,7 @@ body,
 
 .flag {
   width: 320px;
-  height: 200px;
+  min-height: 200px;
 
   display: flex;
   flex-direction: column;
