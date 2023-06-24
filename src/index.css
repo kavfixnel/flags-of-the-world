@@ -70,6 +70,12 @@ body,
   overflow: scroll;
 }
 
+@media screen and (max-width: 600px) {
+  .guessedFlags {
+      display: none !important;
+  }
+}
+
 .guessedFlags > div {
   margin: 5px;
 }
