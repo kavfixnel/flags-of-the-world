@@ -1,32 +1,10 @@
-import { useState, useEffect, useRef, useReducer } from "react";
+import { useState, useEffect } from "react";
+import { useFocus, usePersistedState } from "./helpers";
 
 import countries from "./countries.json";
 import GuessedCountries from "./components/GuessedCountries";
 import Settings from "./components/Settings";
 import Flag from "./components/Flag";
-
-const useFocus = () => {
-  const htmlElRef = useRef(null);
-  const setFocus = () => {
-    htmlElRef.current && htmlElRef.current.focus();
-  };
-
-  return [htmlElRef, setFocus];
-};
-
-const usePersistedState = (defaultValue, storageKey) => {
-  const [value, setValue] = useState(() => {
-    const value = window.localStorage.getItem(storageKey);
-
-    return value ? JSON.parse(value) : defaultValue;
-  });
-
-  useEffect(() => {
-    window.localStorage.setItem(storageKey, JSON.stringify(value));
-  }, [storageKey, value]);
-
-  return [value, setValue];
-};
 
 function App() {
   const [currentCountry, setCurrentCountry] = usePersistedState(
@@ -96,7 +74,6 @@ function App() {
     setGuessedCountries([]);
     nextFlag();
   };
-  // useEffect(resetGame, []);
 
   const [totalLengthHint, settotalLengthHint] = useState(false);
   const [prefixHint, setPrefixHint] = useState(false);
