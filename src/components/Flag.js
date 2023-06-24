@@ -52,6 +52,7 @@ function Flag({
           }}
           className="material-symbols-outlined"
           tabIndex={0}
+          onClick={nextFlag}
         >
           chevron_right
         </span>
@@ -61,6 +62,7 @@ function Flag({
           onKeyDown={(e) => {
             if (e.keyCode === 13) skipFlag();
           }}
+          onClick={skipFlag}
         >
           question_mark
         </span>
@@ -70,6 +72,7 @@ function Flag({
           onKeyDown={(e) => {
             if (e.keyCode === 13) resetGame();
           }}
+          onClick={resetGame}
         >
           restart_alt
         </span>
