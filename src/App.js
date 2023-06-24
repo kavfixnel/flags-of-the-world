@@ -9,11 +9,11 @@ import Flag from "./components/Flag";
 function App() {
   const [currentCountry, setCurrentCountry] = usePersistedState(
     null,
-    "gameSate.currentCountry"
+    "game.state.currentCountry"
   );
   const [guessedCountries, setGuessedCountries] = usePersistedState(
     [],
-    "gameSate.guessedCountries"
+    "game.state.guessedCountries"
   );
 
   const [guess, setGuess] = useState("");
@@ -75,9 +75,10 @@ function App() {
     nextFlag();
   };
 
-  const [totalLengthHint, settotalLengthHint] = usePersistedState(false, 'hint.totalLength');
-  const [prefixHint, setPrefixHint] = usePersistedState(false, 'hint.prefix');
-  const [prefixLengthHint, setPrefixLengthHint] = usePersistedState(1, 'hint.prefixLengthHint');
+  const [totalLengthHint, settotalLengthHint] = usePersistedState(false, 'game.hint.totalLength');
+  const [prefixHint, setPrefixHint] = usePersistedState(false, 'game.hint.prefix');
+  const [prefixLengthHint, setPrefixLengthHint] = usePersistedState(1, 'game.hint.prefixLengthHint');
+  const [showSkipped, setShowSkipped] = usePersistedState(false, 'game.setting.showSkipped');
 
   return currentCountry == null ? (
     <></>
@@ -91,8 +92,10 @@ function App() {
         prefixLengthHint={prefixLengthHint}
         setPrefixLengthHint={setPrefixLengthHint}
         guessedCountries={guessedCountries}
+        showSkipped={showSkipped}
+        setShowSkipped={setShowSkipped}
       />
-      <GuessedCountries countries={guessedCountries} />
+      <GuessedCountries countries={guessedCountries} showSkipped={showSkipped} />
 
       <div className="main ">
         <Flag

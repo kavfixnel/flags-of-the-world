@@ -1,7 +1,7 @@
-function GuessedCountries({ countries }) {
+function GuessedCountries({ countries, showSkipped }) {
   return (
     <div className="guessedFlags">
-      {countries.map((c, i) => (
+      {countries.filter((e) => showSkipped ? true : e.status === 'guessed').map((c, i) => (
         <div key={i} className={c.status}>
           <img
             src={`https://flagcdn.com/w320/${c.alpha2}.png`}

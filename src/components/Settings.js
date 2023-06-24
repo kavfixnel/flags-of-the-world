@@ -12,6 +12,8 @@ function GuessedCountries({
   prefixLengthHint,
   setPrefixLengthHint,
   guessedCountries,
+  showSkipped,
+  setShowSkipped
 }) {
   return (
     <div className="settings">
@@ -47,13 +49,29 @@ function GuessedCountries({
 
       <h2>Stats</h2>
       <p>
-        Number of guessed flags:{" "}
+        Guessed flags:{" "}
         {guessedCountries.reduce(
           (prev, cur) => prev + (cur.status === "guessed" ? 1 : 0),
           0
-        )}
+          )}
         /{countries.length}
       </p>
+      <p>
+        Skipped flags:{" "}
+        {guessedCountries.reduce(
+          (prev, cur) => prev + (cur.status !== "guessed" ? 1 : 0),
+          0
+          )}
+      </p>
+      <label>
+        <input
+          type="checkbox"
+          checked={showSkipped}
+          onChange={(e) => handleCheckChange(e, setShowSkipped)}
+        />
+        Show skipped
+      </label>
+      <br />
     </div>
   );
 }
