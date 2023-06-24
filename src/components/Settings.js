@@ -9,8 +9,8 @@ function GuessedCountries({
   settotalLengthHint,
   prefixHint,
   setPrefixHint,
-  prefixLength,
-  setPrefixLength,
+  prefixLengthHint,
+  setPrefixLengthHint,
   guessedCountries,
 }) {
   return (
@@ -36,9 +36,9 @@ function GuessedCountries({
       <br />
       <label>
         <input
-          value={prefixLength}
+          value={prefixLengthHint}
           type="number"
-          onChange={(e) => setPrefixLength(e.target.value)}
+          onChange={(e) => setPrefixLengthHint(e.target.value)}
           min={0}
         />
         Prefix length

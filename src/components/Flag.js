@@ -1,7 +1,7 @@
 function Flag({
   currentCountry,
   prefixHint,
-  prefixLength,
+  prefixLengthHint,
   totalLengthHint,
   inputRef,
   guess,
@@ -27,14 +27,14 @@ function Flag({
             ? currentCountry.name
                 .substring(
                   0,
-                  Math.min(prefixLength, currentCountry.name.length - 1)
+                  Math.min(prefixLengthHint, currentCountry.name.length - 1)
                 )
                 .toLowerCase()
             : "") +
           (totalLengthHint
             ? "*".repeat(
                 currentCountry.name.length -
-                  Math.min(prefixLength, currentCountry.name.length - 1)
+                  Math.min(prefixLengthHint, currentCountry.name.length - 1)
               )
             : "")
         }

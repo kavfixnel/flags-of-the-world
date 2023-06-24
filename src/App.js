@@ -75,9 +75,9 @@ function App() {
     nextFlag();
   };
 
-  const [totalLengthHint, settotalLengthHint] = useState(false);
-  const [prefixHint, setPrefixHint] = useState(false);
-  const [prefixLength, setPrefixLength] = useState(1);
+  const [totalLengthHint, settotalLengthHint] = usePersistedState(false, 'hint.totalLength');
+  const [prefixHint, setPrefixHint] = usePersistedState(false, 'hint.prefix');
+  const [prefixLengthHint, setPrefixLengthHint] = usePersistedState(1, 'hint.prefixLengthHint');
 
   return currentCountry == null ? (
     <></>
@@ -88,8 +88,8 @@ function App() {
         settotalLengthHint={settotalLengthHint}
         prefixHint={prefixHint}
         setPrefixHint={setPrefixHint}
-        prefixLength={prefixLength}
-        setPrefixLength={setPrefixLength}
+        prefixLengthHint={prefixLengthHint}
+        setPrefixLengthHint={setPrefixLengthHint}
         guessedCountries={guessedCountries}
       />
       <GuessedCountries countries={guessedCountries} />
@@ -98,7 +98,7 @@ function App() {
         <Flag
           currentCountry={currentCountry}
           prefixHint={prefixHint}
-          prefixLength={prefixLength}
+          prefixLengthHint={prefixLengthHint}
           totalLengthHint={totalLengthHint}
           inputRef={inputRef}
           guess={guess}
