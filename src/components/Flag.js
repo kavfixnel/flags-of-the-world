@@ -4,6 +4,7 @@ function Flag({
   prefixLengthHint,
   totalLengthHint,
   inputRef,
+  setInputFocus,
   guess,
   handleInputChange,
   nextFlag,
@@ -12,7 +13,7 @@ function Flag({
 }) {
   return (
     <>
-      <div className="flag">
+      <div className="flag" onClick={setInputFocus}>
         <img
           src={`https://flagcdn.com/w320/${currentCountry.alpha2}.png`}
           srcSet={`https://flagcdn.com/w640/${currentCountry.alpha2}.png 2x`}

@@ -104,6 +104,7 @@ function App() {
           prefixLengthHint={prefixLengthHint}
           totalLengthHint={totalLengthHint}
           inputRef={inputRef}
+          setInputFocus={setInputFocus}
           guess={guess}
           handleInputChange={handleInputChange}
           nextFlag={nextFlag}
