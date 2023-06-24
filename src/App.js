@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 
 import countries from "./countries.json";
 import GuessedCountries from "./components/GuessedCountries";
@@ -14,9 +14,29 @@ const useFocus = () => {
   return [htmlElRef, setFocus];
 };
 
+const usePersistedState = (defaultValue, storageKey) => {
+  const [value, setValue] = useState(() => {
+    const value = window.localStorage.getItem(storageKey);
+
+    return value ? JSON.parse(value) : defaultValue;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(storageKey, JSON.stringify(value));
+  }, [storageKey, value]);
+
+  return [value, setValue];
+};
+
 function App() {
-  const [currentCountry, setCurrentCountry] = useState(null);
-  const [guessedCountries, setGuessedCountries] = useState([]);
+  const [currentCountry, setCurrentCountry] = usePersistedState(
+    null,
+    "gameSate.currentCountry"
+  );
+  const [guessedCountries, setGuessedCountries] = usePersistedState(
+    [],
+    "gameSate.guessedCountries"
+  );
 
   const [guess, setGuess] = useState("");
   const [correct, setCorrect] = useState(false);
@@ -30,6 +50,10 @@ function App() {
       currentCountry != null &&
         currentCountry.name.toLowerCase() === guess.toLowerCase()
     );
+
+    // This is needed to kickstart the game. If there is no state in localstorage
+    // gameSate.currentCountry, we need to set a new flag
+    if (currentCountry === null) nextFlag();
   }, [currentCountry, guess]);
 
   useEffect(() => {
@@ -72,7 +96,7 @@ function App() {
     setGuessedCountries([]);
     nextFlag();
   };
-  useEffect(resetGame, []);
+  // useEffect(resetGame, []);
 
   const [totalLengthHint, settotalLengthHint] = useState(false);
   const [prefixHint, setPrefixHint] = useState(false);
