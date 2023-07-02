@@ -6,8 +6,16 @@ This is a simple game that requires you to guess the flags of the world.
 
 ## Run in dev mode
 
-```
+```bash
 npm start
+```
+
+## To deploy the app
+
+This app is deployed with GitHub pages on https://kavfixnel.github.io/flags-of-the-world/
+
+```bash
+npm run deploy
 ```
 
 Then browse to http://localhost:3000/
