@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFocus, usePersistedState } from "./helpers";
+import { matchesCountry } from "./guessing";
 
 import countries from "./countries.json";
 import GuessedCountries from "./components/GuessedCountries";
@@ -26,15 +27,14 @@ function App() {
   const [guess, setGuess] = useState("");
   const [correct, setCorrect] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
+  // Kept exactly as typed: matching is case- and punctuation-insensitive, so
+  // there is no reason to rewrite what the player sees while they type.
   const handleInputChange = (e) => {
-    setGuess(e.target.value.toLowerCase());
+    setGuess(e.target.value);
   };
 
   useEffect(() => {
-    setCorrect(
-      currentCountry != null &&
-        currentCountry.name.toLowerCase() === guess.toLowerCase()
-    );
+    setCorrect(currentCountry != null && matchesCountry(guess, currentCountry));
 
     // This is needed to kickstart the game. If there is no state in localstorage
     // gameSate.currentCountry, we need to set a new flag
