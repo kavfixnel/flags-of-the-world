@@ -56,11 +56,13 @@ function App() {
     setInputFocus();
   };
 
-  // Files the current flag away under `status` and moves on to the next one
+  // Files the current flag away under `status` and moves on to the next one.
+  // currentCountry is a reference into the imported countries.json array, so it
+  // is copied rather than written to: mutating it would both leave a stray
+  // status on the source data for the rest of the session and change state
+  // without telling React about it.
   const advance = (status) => {
-    currentCountry.status = status;
-
-    const guessed = [currentCountry, ...guessedCountries];
+    const guessed = [{ ...currentCountry, status }, ...guessedCountries];
     setGuessedCountries(guessed);
     pickNext(guessed);
   };
