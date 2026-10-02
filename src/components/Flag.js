@@ -11,6 +11,19 @@ function Flag({
   skipFlag,
   resetGame,
 }) {
+  // Only the part of the name that is actually revealed counts against the
+  // length hint, so the stars have to be measured from the prefix that is shown
+  // (none at all when the prefix hint is off) rather than from prefixLengthHint.
+  const revealed = prefixHint
+    ? Math.min(prefixLengthHint, currentCountry.name.length - 1)
+    : 0;
+
+  const placeholder =
+    currentCountry.name.substring(0, revealed).toLowerCase() +
+    (totalLengthHint
+      ? "*".repeat(currentCountry.name.length - revealed)
+      : "");
+
   return (
     <>
       <div className="flag" onClick={setInputFocus}>
@@ -23,22 +36,7 @@ function Flag({
       </div>
 
       <input
-        placeholder={
-          (prefixHint
-            ? currentCountry.name
-                .substring(
-                  0,
-                  Math.min(prefixLengthHint, currentCountry.name.length - 1)
-                )
-                .toLowerCase()
-            : "") +
-          (totalLengthHint
-            ? "*".repeat(
-                currentCountry.name.length -
-                  Math.min(prefixLengthHint, currentCountry.name.length - 1)
-              )
-            : "")
-        }
+        placeholder={placeholder}
         className="mainInput"
         ref={inputRef}
         value={guess}

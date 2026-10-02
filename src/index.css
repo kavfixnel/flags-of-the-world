@@ -55,6 +55,19 @@ body,
   padding: 1px;
 }
 
+.finished {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  text-align: center;
+}
+
+.finished > button {
+  padding: 5px 10px;
+}
+
 .guessedFlags {
   position: absolute;
   right: 0;
