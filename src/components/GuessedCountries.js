@@ -7,7 +7,7 @@ function GuessedCountries({ countries, showSkipped }) {
             src={`https://flagcdn.com/w320/${c.alpha2}.png`}
             srcSet={`https://flagcdn.com/w640/${c.alpha2}.png 2x`}
             width="240"
-            alt="Country Flag ot guess"
+            alt={`Flag of ${c.name}`}
             style={{ width: "100px" }}
           />
           <p>{c.name}</p>
