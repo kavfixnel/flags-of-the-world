@@ -60,9 +60,16 @@ jobs:
           CI: true
 
       # Same gh-pages package as the manual `npm run deploy`, pushing with the
-      # token actions/checkout already configured
+      # token actions/checkout already configured.
+      #
+      # The identity goes in the global git config rather than gh-pages' --user
+      # flag: that flag is parsed as an RFC 5322 address, and the square
+      # brackets in github-actions[bot] are not valid there, in the name or in
+      # the address. gh-pages commits from a throwaway clone under
+      # node_modules/.cache, which inherits the global config but not this
+      # checkout's local one.
       - name: Publish build to the gh-pages branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npx gh-pages --dist build --user "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" --message "Deploy ${GITHUB_SHA::7}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npx gh-pages --dist build --message "Deploy ${GITHUB_SHA::7}"
