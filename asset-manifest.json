@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/flags-of-the-world/static/css/main.df54c5be.css",
-    "main.js": "/flags-of-the-world/static/js/main.4e6da950.js",
+    "main.css": "/flags-of-the-world/static/css/main.3d14cfb6.css",
+    "main.js": "/flags-of-the-world/static/js/main.302ef049.js",
     "index.html": "/flags-of-the-world/index.html",
-    "main.df54c5be.css.map": "/flags-of-the-world/static/css/main.df54c5be.css.map",
-    "main.4e6da950.js.map": "/flags-of-the-world/static/js/main.4e6da950.js.map"
+    "main.3d14cfb6.css.map": "/flags-of-the-world/static/css/main.3d14cfb6.css.map",
+    "main.302ef049.js.map": "/flags-of-the-world/static/js/main.302ef049.js.map"
   },
   "entrypoints": [
-    "static/css/main.df54c5be.css",
-    "static/js/main.4e6da950.js"
+    "static/css/main.3d14cfb6.css",
+    "static/js/main.302ef049.js"
   ]
 }
