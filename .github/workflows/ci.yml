@@ -59,8 +59,12 @@ jobs:
         env:
           CI: true
 
-      # Same gh-pages package as the manual `npm run deploy`, pushing with the
-      # token actions/checkout already configured.
+      # Same gh-pages package as the manual `npm run deploy`.
+      #
+      # The token has to be passed explicitly through --repo: actions/checkout
+      # stores its credentials in this checkout's *local* git config, while
+      # gh-pages pushes from a throwaway clone under node_modules/.cache, which
+      # never sees them and ends up with no way to authenticate.
       #
       # The identity goes in the global git config rather than gh-pages' --user
       # flag: that flag is parsed as an RFC 5322 address, and the square
@@ -69,7 +73,11 @@ jobs:
       # node_modules/.cache, which inherits the global config but not this
       # checkout's local one.
       - name: Publish build to the gh-pages branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npx gh-pages --dist build --message "Deploy ${GITHUB_SHA::7}"
+          npx gh-pages --dist build \
+            --repo "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            --message "Deploy ${GITHUB_SHA::7}"
