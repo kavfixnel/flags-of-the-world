@@ -25,38 +25,60 @@ const renderFlag = (props = {}) =>
     />
   );
 
-const placeholder = () => screen.getByRole("textbox").placeholder;
+// The slots as text, one character per slot: "_" for an empty one, "." for
+// the punctuation the name carries and "|" between words
+const slots = () =>
+  [...screen.getByTestId("slots").children]
+    .map((word) =>
+      [...word.children]
+        .map((cell) => cell.textContent || "_")
+        .join("")
+    )
+    .join("|");
 
-describe("the hint placeholder", () => {
-  it("is empty when both hints are off", () => {
+describe("the hint slots", () => {
+  it("shows a single open slot when both hints are off", () => {
     renderFlag();
 
-    expect(placeholder()).toBe("");
+    expect(slots()).toBe("_");
   });
 
-  it("stars the whole name when only the length hint is on", () => {
-    renderFlag({ totalLengthHint: true, prefixLengthHint: 1 });
+  it("shows one slot per letter when the length hint is on", () => {
+    renderFlag({ totalLengthHint: true });
 
-    expect(placeholder()).toBe("****");
+    expect(slots()).toBe("____");
   });
 
   it("ignores the prefix length while the prefix hint is off", () => {
     renderFlag({ totalLengthHint: true, prefixLengthHint: 3 });
 
-    expect(placeholder()).toBe("****");
+    expect(slots()).toBe("____");
   });
 
-  it("reveals the prefix and stars the rest", () => {
+  it("reveals the prefix and leaves the rest open", () => {
     renderFlag({ totalLengthHint: true, prefixHint: true, prefixLengthHint: 2 });
 
-    expect(placeholder()).toBe("ch**");
-    expect(placeholder()).toHaveLength(chad.name.length);
+    expect(slots()).toBe("Ch__");
+  });
+
+  it("keeps the hint on screen once the player starts typing", () => {
+    renderFlag({ totalLengthHint: true, prefixHint: true, prefixLengthHint: 2, guess: "c" });
+
+    expect(slots()).toBe("ch__");
   });
 
   it("never reveals the whole name through the prefix", () => {
     renderFlag({ prefixHint: true, prefixLengthHint: 99 });
 
-    expect(placeholder()).toBe("cha");
+    expect(slots()).toBe("Cha_");
+  });
+
+  it("spells the hint out for screen readers", () => {
+    renderFlag({ totalLengthHint: true, prefixHint: true, prefixLengthHint: 2 });
+
+    expect(screen.getByRole("textbox")).toHaveAccessibleDescription(
+      "4 letters, starts with Ch"
+    );
   });
 });
 

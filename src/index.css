@@ -26,13 +26,106 @@ body,
   margin: 5px;
 }
 
+/* The guess is drawn as a row of letter slots. The real input is laid over
+   them, transparent, and only there to take the typing and the focus. */
+.guessBox {
+  position: relative;
+
+  max-width: min(90vw, 480px);
+  margin: 10px 5px;
+}
+
 .mainInput {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+
   border: none;
   outline: none;
+  opacity: 0;
 
-  border-bottom: 1px black solid;
+  /* Below 16px iOS zooms the page in on focus */
+  font-size: 16px;
+  cursor: text;
+}
 
-  margin: 5px;
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+
+  min-height: 1.6em;
+
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+/* Words only break between each other, never mid-word */
+.word {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.slot {
+  display: inline-block;
+  width: 1ch;
+  height: 1.3em;
+  padding: 0 2px;
+
+  border-bottom: 2px solid #999;
+
+  text-align: center;
+  line-height: 1.3em;
+}
+
+.slot.typed {
+  border-bottom-color: black;
+}
+
+.slot.hint {
+  color: #aaa;
+}
+
+.slot.extra {
+  color: #c33;
+  border-bottom-color: #c33;
+}
+
+.punct {
+  width: 1ch;
+  line-height: 1.3em;
+  text-align: center;
+}
+
+.guessBox:focus-within .slot.cursor {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    border-bottom-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guessBox:focus-within .slot.cursor {
+    animation: none;
+    border-bottom-color: #36c;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .actionBar {
