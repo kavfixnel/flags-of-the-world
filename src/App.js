@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useFocus, usePersistedState } from "./helpers";
+import { useFocus, usePersistedState, clampPrefixLength } from "./helpers";
 import { matchesCountry } from "./guessing";
 
 import countries from "./countries.json";
@@ -85,7 +85,13 @@ function App() {
 
   const [totalLengthHint, settotalLengthHint] = usePersistedState(false, 'game.hint.totalLength');
   const [prefixHint, setPrefixHint] = usePersistedState(false, 'game.hint.prefix');
-  const [prefixLengthHint, setPrefixLengthHint] = usePersistedState(1, 'game.hint.prefixLengthHint');
+  const [storedPrefixLength, setStoredPrefixLength] = usePersistedState(1, 'game.hint.prefixLengthHint');
+  // Clamped on the way in and on the way out, so neither a stale string in
+  // localStorage nor a hand-typed value can reach the hint as anything but a
+  // non-negative integer
+  const prefixLengthHint = clampPrefixLength(storedPrefixLength);
+  const setPrefixLengthHint = (value) =>
+    setStoredPrefixLength(clampPrefixLength(value));
   const [showSkipped, setShowSkipped] = usePersistedState(false, 'game.setting.showSkipped');
 
   return (
