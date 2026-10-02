@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 // Longer than the longest country name, so the hint can always reveal all of it
 const MAX_PREFIX_LENGTH = 60;
 
 const useFocus = () => {
   const htmlElRef = useRef(null);
-  const setFocus = () => {
+  // Stable identity: callers list it as an effect dependency, and a fresh
+  // function on every render would re-run those effects every render
+  const setFocus = useCallback(() => {
     htmlElRef.current && htmlElRef.current.focus();
-  };
+  }, []);
 
   return [htmlElRef, setFocus];
 };

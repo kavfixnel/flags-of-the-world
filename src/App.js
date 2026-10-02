@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useFocus, usePersistedState, clampPrefixLength } from "./helpers";
 import { matchesCountry } from "./guessing";
 
@@ -25,7 +25,6 @@ function App() {
   const finished = countries.every((c) => guessedIds.has(c.id));
 
   const [guess, setGuess] = useState("");
-  const [correct, setCorrect] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
   // Kept exactly as typed: matching is case- and punctuation-insensitive, so
   // there is no reason to rewrite what the player sees while they type.
@@ -33,48 +32,53 @@ function App() {
     setGuess(e.target.value);
   };
 
-  useEffect(() => {
-    setCorrect(currentCountry != null && matchesCountry(guess, currentCountry));
-
-    // This is needed to kickstart the game. If there is no state in localstorage
-    // gameSate.currentCountry, we need to set a new flag
-    if (currentCountry === null && !finished) pickNext(guessedCountries);
-  }, [currentCountry, guess]);
-
-  useEffect(() => {
-    if (correct) {
-      // User guessed the flag correctly
-      advance("guessed");
-    }
-  }, [correct]);
-
   // Draws the next flag from the countries that are not in `guessed` yet. The
   // list is passed in rather than read from state, because the callers have just
   // queued an update to it and would otherwise still see the previous render's
   // value, making the country they just answered eligible to be drawn again.
-  const pickNext = (guessed) => {
-    const remaining = countries.filter(
-      (e) => !guessed.some((f) => f.id === e.id)
-    );
-    setCurrentCountry(
-      remaining.length === 0
-        ? null
-        : remaining[Math.floor(Math.random() * remaining.length)]
-    );
-    setGuess("");
-    setInputFocus();
-  };
+  const pickNext = useCallback(
+    (guessed) => {
+      const remaining = countries.filter(
+        (e) => !guessed.some((f) => f.id === e.id)
+      );
+      setCurrentCountry(
+        remaining.length === 0
+          ? null
+          : remaining[Math.floor(Math.random() * remaining.length)]
+      );
+      setGuess("");
+      setInputFocus();
+    },
+    [setCurrentCountry, setInputFocus]
+  );
 
   // Files the current flag away under `status` and moves on to the next one.
   // currentCountry is a reference into the imported countries.json array, so it
   // is copied rather than written to: mutating it would both leave a stray
   // status on the source data for the rest of the session and change state
   // without telling React about it.
-  const advance = (status) => {
-    const guessed = [{ ...currentCountry, status }, ...guessedCountries];
-    setGuessedCountries(guessed);
-    pickNext(guessed);
-  };
+  const advance = useCallback(
+    (status) => {
+      const guessed = [{ ...currentCountry, status }, ...guessedCountries];
+      setGuessedCountries(guessed);
+      pickNext(guessed);
+    },
+    [currentCountry, guessedCountries, setGuessedCountries, pickNext]
+  );
+
+  // This is needed to kickstart the game. If there is no state in localstorage
+  // gameSate.currentCountry, we need to set a new flag
+  useEffect(() => {
+    if (currentCountry === null && !finished) pickNext(guessedCountries);
+  }, [currentCountry, finished, guessedCountries, pickNext]);
+
+  // A correct guess is read straight off the current guess rather than being
+  // round-tripped through a `correct` state value and a second effect
+  useEffect(() => {
+    if (currentCountry != null && matchesCountry(guess, currentCountry)) {
+      advance("guessed");
+    }
+  }, [guess, currentCountry, advance]);
 
   const skipFlag = () => advance("skipped");
 
