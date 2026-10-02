@@ -1,8 +1,8 @@
 function GuessedCountries({ countries, showSkipped }) {
   return (
     <div className="guessedFlags">
-      {countries.filter((e) => showSkipped ? true : e.status === 'guessed').map((c, i) => (
-        <div key={i} className={c.status}>
+      {countries.filter((e) => showSkipped ? true : e.status === 'guessed').map((c) => (
+        <div key={c.id} className={c.status}>
           <img
             src={`https://flagcdn.com/w320/${c.alpha2}.png`}
             srcSet={`https://flagcdn.com/w640/${c.alpha2}.png 2x`}
