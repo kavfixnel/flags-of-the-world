@@ -16,6 +16,13 @@ function App() {
     "game.state.guessedCountries"
   );
 
+  // Every country has been either guessed or skipped. Derived rather than
+  // stored, so it survives a reload along with the guessed list. Matching on
+  // ids rather than comparing lengths, because a list persisted by an older
+  // version of the game can hold the same country twice.
+  const guessedIds = new Set(guessedCountries.map((c) => c.id));
+  const finished = countries.every((c) => guessedIds.has(c.id));
+
   const [guess, setGuess] = useState("");
   const [correct, setCorrect] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
@@ -31,7 +38,7 @@ function App() {
 
     // This is needed to kickstart the game. If there is no state in localstorage
     // gameSate.currentCountry, we need to set a new flag
-    if (currentCountry === null) pickNext(guessedCountries);
+    if (currentCountry === null && !finished) pickNext(guessedCountries);
   }, [currentCountry, guess]);
 
   useEffect(() => {
@@ -49,9 +56,11 @@ function App() {
     const remaining = countries.filter(
       (e) => !guessed.some((f) => f.id === e.id)
     );
-    if (remaining.length === 0) return;
-
-    setCurrentCountry(remaining[Math.floor(Math.random() * remaining.length)]);
+    setCurrentCountry(
+      remaining.length === 0
+        ? null
+        : remaining[Math.floor(Math.random() * remaining.length)]
+    );
     setGuess("");
     setInputFocus();
   };
@@ -79,9 +88,7 @@ function App() {
   const [prefixLengthHint, setPrefixLengthHint] = usePersistedState(1, 'game.hint.prefixLengthHint');
   const [showSkipped, setShowSkipped] = usePersistedState(false, 'game.setting.showSkipped');
 
-  return currentCountry == null ? (
-    <></>
-  ) : (
+  return (
     <>
       <Settings
         totalLengthHint={totalLengthHint}
@@ -97,19 +104,34 @@ function App() {
       <GuessedCountries countries={guessedCountries} showSkipped={showSkipped} />
 
       <div className="main ">
-        <Flag
-          currentCountry={currentCountry}
-          prefixHint={prefixHint}
-          prefixLengthHint={prefixLengthHint}
-          totalLengthHint={totalLengthHint}
-          inputRef={inputRef}
-          setInputFocus={setInputFocus}
-          guess={guess}
-          handleInputChange={handleInputChange}
-          nextFlag={() => pickNext(guessedCountries)}
-          skipFlag={skipFlag}
-          resetGame={resetGame}
-        />
+        {finished ? (
+          <div className="finished">
+            <h1>All {countries.length} flags done!</h1>
+            <p>
+              {guessedCountries.filter((c) => c.status === "guessed").length}{" "}
+              guessed,{" "}
+              {guessedCountries.filter((c) => c.status !== "guessed").length}{" "}
+              skipped
+            </p>
+            <button onClick={resetGame}>Play again</button>
+          </div>
+        ) : (
+          currentCountry != null && (
+            <Flag
+              currentCountry={currentCountry}
+              prefixHint={prefixHint}
+              prefixLengthHint={prefixLengthHint}
+              totalLengthHint={totalLengthHint}
+              inputRef={inputRef}
+              setInputFocus={setInputFocus}
+              guess={guess}
+              handleInputChange={handleInputChange}
+              nextFlag={() => pickNext(guessedCountries)}
+              skipFlag={skipFlag}
+              resetGame={resetGame}
+            />
+          )
+        )}
       </div>
     </>
   );
