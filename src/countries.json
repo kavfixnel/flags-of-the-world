@@ -307,7 +307,7 @@
     },
     {
         "id": "180",
-        "name": "Congo",
+        "name": "Democratic Republic of the Congo",
         "alpha2": "cd",
         "alpha3": "cod"
     },
@@ -733,7 +733,7 @@
     },
     {
         "id": "418",
-        "name": "Lao",
+        "name": "Laos",
         "alpha2": "la",
         "alpha3": "lao"
     },
@@ -1297,7 +1297,7 @@
     },
     {
         "id": "760",
-        "name": "Syrian",
+        "name": "Syria",
         "alpha2": "sy",
         "alpha3": "syr"
     },
@@ -1453,13 +1453,13 @@
     },
     {
         "id": "092",
-        "name": "Virgin Islands",
+        "name": "British Virgin Islands",
         "alpha2": "vg",
         "alpha3": "vgb"
     },
     {
         "id": "850",
-        "name": "Virgin Islands",
+        "name": "United States Virgin Islands",
         "alpha2": "vi",
         "alpha3": "vir"
     },

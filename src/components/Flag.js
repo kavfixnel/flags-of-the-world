@@ -31,7 +31,7 @@ function Flag({
           src={`https://flagcdn.com/w320/${currentCountry.alpha2}.png`}
           srcSet={`https://flagcdn.com/w640/${currentCountry.alpha2}.png 2x`}
           width="240"
-          alt="Country Flag ot guess"
+          alt="Flag to guess"
         />
       </div>
 
@@ -41,39 +41,40 @@ function Flag({
         ref={inputRef}
         value={guess}
         onChange={handleInputChange}
+        aria-label="Guess the country"
+        autoComplete="off"
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
       />
 
+      {/* Buttons rather than spans with key handlers: Enter, Space, the right
+          role for screen readers and a focus ring all come for free */}
       <div className="actionBar">
-        <span
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) nextFlag();
-          }}
+        <button
+          type="button"
           className="material-symbols-outlined"
-          tabIndex={0}
+          aria-label="Show another flag"
           onClick={nextFlag}
         >
           chevron_right
-        </span>
-        <span
+        </button>
+        <button
+          type="button"
           className="material-symbols-outlined"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) skipFlag();
-          }}
+          aria-label="Give up on this flag"
           onClick={skipFlag}
         >
           question_mark
-        </span>
-        <span
+        </button>
+        <button
+          type="button"
           className="material-symbols-outlined"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) resetGame();
-          }}
+          aria-label="Start a new game"
           onClick={resetGame}
         >
           restart_alt
-        </span>
+        </button>
       </div>
     </>
   );

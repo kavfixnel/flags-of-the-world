@@ -40,6 +40,18 @@ body,
   flex-direction: row;
 }
 
+/* The action bar is made of real buttons, stripped back to look like the icons
+   they were before */
+.actionBar > button {
+  background: none;
+  border: none;
+
+  padding: 0 2px;
+
+  color: inherit;
+  cursor: pointer;
+}
+
 .flag {
   width: 320px;
   min-height: 200px;

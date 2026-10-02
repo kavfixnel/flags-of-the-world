@@ -1,4 +1,5 @@
 import countries from "../countries.json";
+import { MAX_PREFIX_LENGTH } from "../helpers";
 
 const handleCheckChange = (e, f) => {
   f(e.target.checked);
@@ -42,6 +43,7 @@ function GuessedCountries({
           type="number"
           onChange={(e) => setPrefixLengthHint(e.target.value)}
           min={0}
+          max={MAX_PREFIX_LENGTH}
         />
         Prefix length
       </label>

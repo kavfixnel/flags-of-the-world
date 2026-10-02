@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
+// Longer than the longest country name, so the hint can always reveal all of it
+const MAX_PREFIX_LENGTH = 60;
+
 const useFocus = () => {
   const htmlElRef = useRef(null);
   const setFocus = () => {
@@ -36,4 +39,15 @@ const usePersistedState = (defaultValue, storageKey) => {
   return [value, setValue];
 };
 
-export { useFocus, usePersistedState };
+// The number input hands back strings, and localStorage can hold anything a
+// previous version of the game wrote there, so the prefix length is forced into
+// a usable number at the one place that owns it.
+const clampPrefixLength = (value) => {
+  const length = Math.floor(Number(value));
+
+  if (Number.isNaN(length)) return 0;
+
+  return Math.min(Math.max(length, 0), MAX_PREFIX_LENGTH);
+};
+
+export { useFocus, usePersistedState, clampPrefixLength, MAX_PREFIX_LENGTH };
