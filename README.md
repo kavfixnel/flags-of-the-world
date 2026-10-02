@@ -10,15 +10,27 @@ This is a simple game that requires you to guess the flags of the world.
 npm start
 ```
 
+## Run the tests
+
+```bash
+npm test
+```
+
+The suite covers the guess matching and alias table, the persisted-state hook,
+the hint placeholder and the game loop. It runs in watch mode locally and once
+through on CI.
+
 ## To deploy the app
 
 This app is deployed with GitHub pages on https://kavfixnel.github.io/flags-of-the-world/
 
+Every push to `main` is tested, built and published to the `gh-pages` branch by
+`.github/workflows/ci.yml`, so a merged pull request goes live on its own. To
+publish from your machine instead:
+
 ```bash
 npm run deploy
 ```
-
-Then browse to http://localhost:3000/
 
 ## Backlinks
 

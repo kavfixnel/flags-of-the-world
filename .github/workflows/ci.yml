@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm test -- --watchAll=false
+
+      # CI=true turns react-scripts' lint warnings into build failures, which is
+      # the point: a warning that nothing enforces is a warning that accumulates
+      - run: npm run build
+        env:
+          CI: true
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    # The site is served from the gh-pages branch; two deploys racing to push to
+    # it would be a lost update rather than a merge
+    concurrency:
+      group: gh-pages
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          CI: true
+
+      # Same gh-pages package as the manual `npm run deploy`, pushing with the
+      # token actions/checkout already configured
+      - name: Publish build to the gh-pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npx gh-pages --dist build --user "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" --message "Deploy ${GITHUB_SHA::7}"
